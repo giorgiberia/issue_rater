@@ -18,11 +18,12 @@ def issue_list_and_create(request):
     else:
         form = IssueForm()
 
-    issues_list = Issue.objects.all()
+    issues_list = Issue.objects.all().order_by('-rating')
+    all_issues_count = issues_list.count()
     paginator = Paginator(issues_list, 7)  # Show 10 issues per page
     page_number = request.GET.get("page")
     issues = paginator.get_page(page_number)
-
+    messages.success(request, f"Your venue has {all_issues_count} issues.")
     vote_form = VoteForm()
     return render(
         request,

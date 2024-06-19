@@ -1,6 +1,6 @@
 # Issues Voting App
 
-This is a Django-based web application for tracking issues and allowing users to vote on them. The app provides functionality for creating new issues and voting on existing issues with upvotes and downvotes.
+This is a Django-based web application for rating issues and allowing users to vote on them. The app provides functionality for creating new issues and voting on existing issues with upvotes and downvotes.
 
 ## Table of Contents
 

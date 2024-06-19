@@ -1,7 +1,7 @@
 {% load static %}
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <title>Issues</title>
     <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
@@ -9,7 +9,7 @@
 <body>
 <div class="container">
     <div class="left-section">
-        <h1>Issues</h1>
+        <h3>Issues</h3>
         <table>
             <thead>
             <tr>
@@ -57,14 +57,8 @@
     </div>
 
     <div class="right-section">
-        <h1>Create a New Issue</h1>
-        <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit">Save</button>
-        </form>
-        <hr>
-        <div class="sticky-messages" id="sticky-messages">
+        <h3>Create new</h3>
+        <div class="s-messages" id="s-messages">
             {% if messages %}
                 <ul>
                     {% for message in messages %}
@@ -75,6 +69,12 @@
                 </ul>
             {% endif %}
         </div>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Save</button>
+        </form>
+        <hr>
     </div>
 </div>
 </body>
