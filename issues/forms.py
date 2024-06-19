@@ -6,7 +6,7 @@ from issues.models import Issue, Vote
 class IssueForm(forms.ModelForm):
     class Meta:
         model = Issue
-        fields = ["title", "description", "rating"]
+        fields = ["title", "description"]
 
 class VoteForm(forms.ModelForm):
     class Meta:
