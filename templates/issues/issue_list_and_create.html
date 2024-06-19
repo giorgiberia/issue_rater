@@ -7,9 +7,28 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
 </head>
 <body>
+<header>
+    <nav class="navbar">
+        <div class="nav-left">
+            <!-- Add other navigation items here -->
+            <a href="/issues">Home</a>
+            <a href="/issues/about">About</a>
+        </div>
+        <div class="nav-right">
+            <form method="post" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit" class="logout-button">Logout</button>
+            </form>
+        </div>
+    </nav>
+</header>
 <div class="container">
     <div class="left-section">
-        <h3>Issues</h3>
+        <h4>Issues</h4>
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Search for issues...">
+            
+        </div>
         <table>
             <thead>
             <tr>
@@ -57,7 +76,7 @@
     </div>
 
     <div class="right-section">
-        <h3>Create new</h3>
+        <h4>Create new</h4>
         <div class="s-messages" id="s-messages">
             {% if messages %}
                 <ul>

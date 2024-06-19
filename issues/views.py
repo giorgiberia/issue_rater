@@ -6,6 +6,8 @@ from django.contrib import messages
 from issues.forms import IssueForm, VoteForm
 from issues.models import Issue, Vote
 
+def about(request):
+    return render(request, "issues/about.html")
 
 @login_required
 def issue_list_and_create(request):
