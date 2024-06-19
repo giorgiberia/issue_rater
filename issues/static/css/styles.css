@@ -124,3 +124,33 @@ form input, form textarea, form select {
     border-radius: 4px;
     background-color: #f0f0f0;
 }
+
+.sticky-messages {
+    background-color: #f0f0f0;
+    padding: 10px;
+    border-bottom: 2px solid #ccc;
+    text-align: center;
+    z-index: 1000; /* Ensure it's above other content */
+}
+
+.sticky-messages ul {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+.sticky-messages li {
+    margin: 5px 0;
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.sticky-messages .success {
+    color: #4CAF50;
+}
+
+.sticky-messages .error {
+    color: #F44336;
+}

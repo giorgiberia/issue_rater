@@ -29,7 +29,8 @@
                         <form method="post" action="{% url 'vote_issue' issue.id %}">
                             {% csrf_token %}
                             <button type="submit" name="vote_type" value="1" class="vote-button upvote">Upvote</button>
-                            <button type="submit" name="vote_type" value="-1" class="vote-button downvote">Downvote</button>
+                            <button type="submit" name="vote_type" value="-1" class="vote-button downvote">Downvote
+                            </button>
                         </form>
                     </td>
                 </tr>
@@ -62,6 +63,18 @@
             {{ form.as_p }}
             <button type="submit">Save</button>
         </form>
+        <hr>
+        <div class="sticky-messages" id="sticky-messages">
+            {% if messages %}
+                <ul>
+                    {% for message in messages %}
+                        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>
+                            {{ message }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
     </div>
 </div>
 </body>

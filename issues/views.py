@@ -1,15 +1,19 @@
-from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 
-from .forms import IssueForm, VoteForm
-from .models import Issue
+from issues.forms import IssueForm, VoteForm
+from issues.models import Issue, Vote
 
+
+@login_required
 def issue_list_and_create(request):
     if request.method == "POST":
         form = IssueForm(request.POST)
         if form.is_valid():
             form.save()
+            messages.success(request, "Issue created successfully.")
             return redirect("issue_list_and_create")
     else:
         form = IssueForm()
@@ -30,13 +34,29 @@ def issue_list_and_create(request):
 @login_required
 def vote_issue(request, issue_id):
     issue = get_object_or_404(Issue, pk=issue_id)
+    user = request.user
+
     if request.method == "POST":
         form = VoteForm(request.POST)
         if form.is_valid():
-            # Ensure the current user is passed to the form's save method
-            try:
-                form.save(issue=issue, user=request.user)
-            except Exception as e:
-                print(f"Error saving vote: {e}")
-            return redirect("issue_list_and_create")
+            vote_type = form.cleaned_data["vote_type"]
+            vote, created = Vote.objects.get_or_create(user=user, issue=issue)
+
+            if created:
+                vote.vote_type = vote_type
+                vote.save()
+                issue.rating += vote_type
+                messages.success(request, "Your vote has been counted.")
+            elif vote.vote_type == vote_type:
+                messages.error(request, "You have already voted on this issue.")
+            else:
+                issue.rating -= vote.vote_type  # Remove previous vote
+                vote.vote_type = vote_type
+                vote.save()
+                issue.rating += (vote_type - vote.vote_type) # Adjust for the change in vote_type
+                messages.success(request, "Your vote has been updated.")
+            issue.save()
+        else:
+            messages.error(request, "Invalid form submission.")
+
     return redirect("issue_list_and_create")
