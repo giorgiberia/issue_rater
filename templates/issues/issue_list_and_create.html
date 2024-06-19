@@ -1,0 +1,37 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Issues</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+<div class="container">
+    <div class="left-section">
+        <h1>Issues</h1>
+        <ul>
+            {% for issue in issues %}
+                <li>
+                    {{ issue.title }} - Rating: {{ issue.rating }}
+                    <form method="post" action="{% url 'vote_issue' issue.id %}">
+                        {% csrf_token %}
+                        <button type="submit" name="vote_type" value="1" class="vote-button upvote">Upvote</button>
+                        <button type="submit" name="vote_type" value="-1" class="vote-button downvote">Downvote</button>
+                    </form>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="right-section">
+        <h1>Create a New Issue</h1>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Save</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>
