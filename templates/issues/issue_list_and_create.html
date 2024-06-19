@@ -14,6 +14,7 @@
             <thead>
             <tr>
                 <th>Title</th>
+                <th>Description</th>
                 <th>Rating</th>
                 <th>Action</th>
             </tr>
@@ -22,9 +23,10 @@
             {% for issue in issues %}
                 <tr>
                     <td>{{ issue.title }}</td>
+                    <td>{{ issue.description }}</td>
                     <td>{{ issue.rating }}</td>
                     <td>
-                        <form method="post" action="{% url 'vote_issue' issue.id %}" style="display:inline;">
+                        <form method="post" action="{% url 'vote_issue' issue.id %}">
                             {% csrf_token %}
                             <button type="submit" name="vote_type" value="1" class="vote-button upvote">Upvote</button>
                             <button type="submit" name="vote_type" value="-1" class="vote-button downvote">Downvote</button>
@@ -34,6 +36,23 @@
             {% endfor %}
             </tbody>
         </table>
+        <div class="pagination">
+            <span class="step-links">
+                {% if issues.has_previous %}
+                    <a href="?page=1">&laquo; first</a>
+                    <a href="?page={{ issues.previous_page_number }}">previous</a>
+                {% endif %}
+
+                <span class="current">
+                    Page {{ issues.number }} of {{ issues.paginator.num_pages }}.
+                </span>
+
+                {% if issues.has_next %}
+                    <a href="?page={{ issues.next_page_number }}">next</a>
+                    <a href="?page={{ issues.paginator.num_pages }}">last &raquo;</a>
+                {% endif %}
+            </span>
+        </div>
     </div>
 
     <div class="right-section">

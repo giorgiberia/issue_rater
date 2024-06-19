@@ -87,3 +87,40 @@ button:hover {
 .downvote {
     color: red; /* Style for downvote button */
 }
+
+form input, form textarea, form select {
+    width: 100%; /* Ensure inputs use full width */
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.pagination {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.pagination a {
+    color: #007bff;
+    text-decoration: none;
+    padding: 5px 10px;
+    border: 1px solid #ddd;
+    margin: 0 5px;
+    border-radius: 4px;
+}
+
+.pagination a:hover {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+
+.pagination .current {
+    padding: 5px 10px;
+    border: 1px solid #ddd;
+    margin: 0 5px;
+    border-radius: 4px;
+    background-color: #f0f0f0;
+}
