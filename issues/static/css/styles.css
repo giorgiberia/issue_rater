@@ -203,11 +203,14 @@ form input, form textarea, form select {
 .logout-button:hover {
     background-color: #d32f2f;
 }
-.search-bar {
-    margin-bottom: 10px;
+/* Add this to your styles.css */
+.search-form {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
 }
-.search-bar input {
-    width: 100%;
-    padding: 10px;
-    box-sizing: border-box;
+.search-form .search-input {
+    flex: 1; /* Takes up equal space as the button */
+    margin-right: 10px; /* Optional: Adjust if needed */
+    height: 35px;
 }

@@ -18,10 +18,17 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include   # Include 'include' for the URLs
 
+from issues.views import register, user_login, user_logout, issue_list_and_create
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('issues/', include('issues.urls')),
     path('accounts/', include('django.contrib.auth.urls')),  # Include Django's auth URLs
+    path('register/', register, name='register'),
+    path('login/', user_login, name='login'),
+    path('logout/', user_logout, name='logout'),
+    path('', issue_list_and_create, name='issue_list_and_create')
+
 ]
 
 

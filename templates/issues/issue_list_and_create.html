@@ -15,20 +15,25 @@
             <a href="/issues/about">About</a>
         </div>
         <div class="nav-right">
-            <form method="post" action="{% url 'logout' %}">
-                {% csrf_token %}
-                <button type="submit" class="logout-button">Logout</button>
-            </form>
+            {% if user.is_authenticated %}
+                <form method="post" action="{% url 'logout' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="logout-button">Logout</button>
+                </form>
+            {% else %}
+                <a href="{% url 'login' %}">Login</a>
+                <a href="{% url 'register' %}">Register</a>
+            {% endif %}
         </div>
     </nav>
 </header>
 <div class="container">
     <div class="left-section">
         <h4>Issues</h4>
-        <div class="search-bar">
-            <input type="text" id="searchInput" placeholder="Search for issues...">
-            
-        </div>
+        <form method="get" action="{% url 'issue_list_and_create' %}" class="search-form">
+            <input type="text" name="search" placeholder="Search issues..." value="{{ request.GET.search }}" class="search-input">
+            <button type="submit">Search</button>
+        </form>
         <table>
             <thead>
             <tr>
