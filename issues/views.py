@@ -1,11 +1,14 @@
+from django.contrib import messages
+from django.contrib.auth import login, logout
+from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.db.models import Q
-from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib.auth.decorators import login_required
-from django.contrib import messages
+from django.shortcuts import get_object_or_404
+from django.shortcuts import render, redirect
 
 from issues.forms import IssueForm, VoteForm
 from issues.models import Issue, Vote
+from .forms import UserRegistrationForm, UserLoginForm
 
 
 def about(request):
@@ -79,11 +82,7 @@ def vote_issue(request, issue_id):
 
     return redirect("issue_list_and_create")
 
-from django.shortcuts import render, redirect
-from django.contrib.auth import login, authenticate, logout
-from django.contrib.auth.decorators import login_required
-from django.contrib import messages
-from .forms import UserRegistrationForm, UserLoginForm
+
 
 def register(request):
     if request.method == 'POST':
