@@ -28,8 +28,7 @@ def issue_list_and_create(request):
     else:
         form = IssueForm()
 
-    search_query = request.GET.get("search", "")
-    if search_query:
+    if search_query := request.GET.get("search", ""):
         issues_qs = Issue.objects.filter(
             Q(title__icontains=search_query) | Q(description__icontains=search_query)
         )
@@ -73,7 +72,7 @@ def vote_issue(request, issue_id):
                 vote.vote_type = vote_type
                 vote.save()
                 issue.rating += (
-                    vote_type - vote.vote_type
+                        vote_type - vote.vote_type
                 )  # Adjust for the change in vote_type
                 messages.success(request, "Your vote has been updated.")
             issue.save()
@@ -83,18 +82,19 @@ def vote_issue(request, issue_id):
     return redirect("issue_list_and_create")
 
 
-
 def register(request):
     if request.method == 'POST':
         form = UserRegistrationForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            login(request, user)
-            messages.success(request, 'Registration successful.')
-            return redirect('issue_list_and_create')
+        if not form.is_valid():
+            return render(request, 'registration/register.html', {'form': form})
+        user = form.save()
+        login(request, user)
+        messages.success(request, 'Registration successful.')
+        return redirect('issue_list_and_create')
     else:
         form = UserRegistrationForm()
     return render(request, 'registration/register.html', {'form': form})
+
 
 def user_login(request):
     if request.method == 'POST':
@@ -108,9 +108,9 @@ def user_login(request):
         form = UserLoginForm()
     return render(request, 'registration/login.html', {'form': form})
 
+
 @login_required
 def user_logout(request):
     logout(request)
     messages.success(request, 'Logout successful.')
     return redirect('login')
-
