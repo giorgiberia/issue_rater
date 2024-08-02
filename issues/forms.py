@@ -9,6 +9,10 @@ class IssueForm(forms.ModelForm):
     class Meta:
         model = Issue
         fields = ["title", "description"]
+        widgets = {
+            'title': forms.TextInput(attrs={'class': 'form-control', 'id': 'id_title'}),
+            'description': forms.Textarea(attrs={'class': 'form-control', 'id': 'id_description'}),
+        }
 
 
 class VoteForm(forms.ModelForm):

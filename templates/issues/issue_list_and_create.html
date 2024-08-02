@@ -4,102 +4,177 @@
 <html lang="en">
 <head>
     <title>Issues</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/adminlte.min.css' %}">
 </head>
 <body>
 <header>
-    <nav class="navbar">
-        <div class="nav-left">
-            <!-- Add other navigation items here -->
-            <a href="/issue/">Home</a>
-            <a href="/issue/about/">About</a>
+    <nav class="app-header navbar navbar-expand navbar-dark bg-dark"> <!--begin::Container-->
+        <div class="container-fluid">
+            <!--begin::Start Navbar Links-->
+            <ul class="navbar-nav">
+                <li class="nav-item d-none d-md-block"><a href="/issue/" class="nav-link">მთავარი</a></li>
+                <li class="nav-item d-none d-md-block"><a href="/issue/about/" class="nav-link">კონტაქტი</a></li>
+            </ul>
+            <!--end::Start Navbar Links-->
+            <!--begin::End Navbar Links-->
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item d-none d-md-block"><span
+                        class="nav-link">{{ request.user.first_name }} {{ request.user.last_name }}</span></li>
+                <li class="nav-item">
+                    <form method="post" action="{% url 'logout' %}" class="form-inline">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-outline-light btn-flat float-end">გასვლა</button>
+                    </form>
+                </li>
+            </ul>
+            <!--end::End Navbar Links-->
         </div>
-        <div class="nav-right">
-            {% if user.is_authenticated %}
-                <form method="post" action="{% url 'logout' %}">
-                    {% csrf_token %}
-                    <button type="submit" class="logout-button">Logout</button>
-                </form>
-            {% else %}
-                <a href="{% url 'login' %}">Login</a>
-                <a href="{% url 'register' %}">Register</a>
-            {% endif %}
-        </div>
+        <!--end::Container-->
     </nav>
 </header>
-<div class="container">
-    <div class="left-section">
-        <h4>Issues</h4>
-        <form method="get" action="{% url 'issue_list_and_create' %}" class="search-form">
-            <input type="text" name="search" placeholder="Search issues..." value="{{ request.GET.search }}" class="search-input">
-            <button type="submit">Search</button>
-        </form>
-        <table>
-            <thead>
-            <tr>
-                <th>Title</th>
-                <th>Description</th>
-                <th>Rating</th>
-                <th>Action</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for issue in issues %}
-                <tr>
-                    <td>{{ issue.title }}</td>
-                    <td>{{ issue.description }}</td>
-                    <td>{{ issue.rating }}</td>
-                    <td>
-                        <form method="post" action="{% url 'vote_issue' issue.id %}">
-                            {% csrf_token %}
-                            <button type="submit" name="vote_type" value="1" class="vote-button upvote">Upvote</button>
-                            <button type="submit" name="vote_type" value="-1" class="vote-button downvote">Downvote
-                            </button>
-                        </form>
-                    </td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-        <div class="pagination">
-            <span class="step-links">
-                {% if issues.has_previous %}
-                    <a href="?page=1">&laquo; first</a>
-                    <a href="?page={{ issues.previous_page_number }}">previous</a>
+
+<div class="container-fluid"> <!--begin::Row-->
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h3 class="card-title">საკითხები</h3>
+                </div> <!-- /.card-header -->
+                <div class="card-body">
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th style="width: 10px">#</th>
+                            <th>საკითხი</th>
+                            <th>ვრცლად</th>
+                            <th>ხმის მიცემა</th>
+                            <th style="width: 40px">რეიტინგი</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for issue in issues %}
+                            <tr class="align-middle">
+                                <td>{{ issue.id }}.</td>
+                                <td>{{ issue.title }}</td>
+                                <td>
+                                    {{ issue.description }}</td>
+                                <td>
+                                    <div class="btn-group">
+                                        <form method="post" action="{% url 'vote_issue' issue.id %}">
+                                            {% csrf_token %}
+                                            <button type="submit" name="vote_type" value="1"
+                                                    class="btn btn-outline-success btn-sm">Upvote
+                                            </button>
+                                            <button type="submit" name="vote_type" value="-1"
+                                                    class="btn btn-outline-danger btn-sm">Downvote
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                                <td>
+                                    {% if issue.rating <= 0 %}
+                                        <span class="badge text bg-danger">{{ issue.rating }}</span>
+                                    {% elif issue.rating > 5 %}
+                                        <span class="badge text bg-success">{{ issue.rating }}</span>
+                                    {% else %}
+                                        <span class="badge text-bg-warning">{{ issue.rating }}</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div> <!-- /.card-body -->
+                <div class="card-footer clearfix">
+                    <ul class="pagination pagination-sm m-0 float-end">
+                        {% if issues.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page=1" aria-label="First">
+                                    <span aria-hidden="true">&laquo;&laquo;</span>
+                                </a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ issues.previous_page_number }}"
+                                   aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                        {% endif %}
+
+                        {# Dynamically display 3 pages around the current page #}
+                        {% for num in issues.paginator.page_range %}
+                            {% if num > issues.number|add:'-2' and num < issues.number|add:'2' %}
+                                <li class="page-item {% if issues.number == num %}active{% endif %}">
+                                    <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+
+                        {% if issues.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ issues.next_page_number }}" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ issues.paginator.num_pages }}" aria-label="Last">
+                                    <span aria-hidden="true">&raquo;&raquo;</span>
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
+
+            </div> <!-- /.card -->
+        </div> <!-- /.col -->
+        <div class="col-md-4">
+            <div class="card card-primary card-outline mb-4">
+                <!--begin::Header-->
+                <div class="card-header">
+                    <h3 class="card-title">ახალი საკითხი</h3>
+                </div>
+
+                <!--begin::Form-->
+                <form method="post">
+                    {% csrf_token %}
+                    <!--begin::Body-->
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label for="id_title" class="form-label">სათაური:</label>
+                            {{ form.title }}
+                        </div>
+                        <div class="mb-3">
+                            <label for="id_description" class="form-label">ვრცელი აღწერა:</label>
+                            {{ form.description }}
+                        </div>
+
+                    </div>
+                    <!--end::Body-->
+
+                    <!--begin::Footer-->
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-primary">შენახვა</button>
+                    </div>
+                    <!--end::Footer-->
+                </form>
+                <!--end::Form-->
+            </div>
+
+            <div class="s-messages" id="s-messages">
+                {% if messages %}
+                    <ul class="message-list">
+                        {% for message in messages %}
+                            <li class="alert {% if 'success' in message.tags %}alert-success{% elif 'error' in message.tags %}alert-danger{% elif 'warning' in message.tags %}alert-warning{% elif 'info' in message.tags %}alert-info{% endif %}">
+                                {{ message }}
+                            </li>
+                        {% endfor %}
+                    </ul>
                 {% endif %}
-
-                <span class="current">
-                    Page {{ issues.number }} of {{ issues.paginator.num_pages }}.
-                </span>
-
-                {% if issues.has_next %}
-                    <a href="?page={{ issues.next_page_number }}">next</a>
-                    <a href="?page={{ issues.paginator.num_pages }}">last &raquo;</a>
-                {% endif %}
-            </span>
-        </div>
-    </div>
-
-    <div class="right-section">
-        <h4>Create new</h4>
-        <div class="s-messages" id="s-messages">
-            {% if messages %}
-                <ul>
-                    {% for message in messages %}
-                        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>
-                            {{ message }}
-                        </li>
-                    {% endfor %}
-                </ul>
-            {% endif %}
-        </div>
-        <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit">Save</button>
-        </form>
-        <hr>
-    </div>
+            </div>
+        </div> <!-- /.col -->
+    </div> <!--end::Row-->
 </div>
+
+<script src="{% static 'js/adminlte.min.js' %}"></script>
 </body>
 </html>
