@@ -99,11 +99,12 @@ def register(request):
 def user_login(request):
     if request.method == 'POST':
         form = UserLoginForm(data=request.POST)
-        if form.is_valid():
-            user = form.get_user()
-            login(request, user)
-            messages.success(request, 'Login successful.')
-            return redirect('issue_list_and_create')
+        if not form.is_valid():
+            return render(request, 'registration/login.html', {'form': form})
+        user = form.get_user()
+        login(request, user)
+        messages.success(request, 'Login successful.')
+        return redirect('issue_list_and_create')
     else:
         form = UserLoginForm()
     return render(request, 'registration/login.html', {'form': form})
