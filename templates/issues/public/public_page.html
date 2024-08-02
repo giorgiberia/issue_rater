@@ -14,21 +14,25 @@
             background-color: #f4f6f9;
             color: #333;
         }
+
         .header {
             background-color: #343a40;
             color: #fff;
             padding: 10px 0;
         }
+
         .header .container {
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
+
         .header .nav a {
             color: #fff;
             margin-left: 15px;
             text-decoration: none;
         }
+
         .hero {
             background: linear-gradient(180deg, #e0f7fa, #80deea);
             background-size: cover;
@@ -36,21 +40,26 @@
             color: #fff;
             text-align: center;
         }
+
         .hero h1 {
             font-size: 48px;
             margin-bottom: 20px;
         }
+
         .hero p {
             font-size: 24px;
             margin-bottom: 30px;
         }
+
         .cta-buttons a {
             margin: 0 10px;
         }
+
         .features, .pricing, .faq, .footer {
             padding: 50px 0;
             text-align: center;
         }
+
         .footer {
             background-color: #343a40;
             color: #fff;
@@ -64,10 +73,19 @@
         <div class="logo">
             <a href="/" class="navbar-brand"><b>Issues</b>Tracker</a>
         </div>
-        <nav class="nav">
-            <a href="/login" class="btn btn-outline-light">Login</a>
-            <a href="/register" class="btn btn-primary">Sign Up</a>
-        </nav>
+        {% if request.user.is_authenticated %}
+            <nav class="nav">
+                <form method="post" action="{% url 'logout' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-outline-light">Logout</button>
+                </form>
+            </nav>
+        {% else %}
+            <nav class="nav">
+                <a href="{% url 'login' %}" class="btn btn-outline-light">Login</a>
+                <a href="{% url 'register' %}" class="btn btn-primary">Sign Up</a>
+            </nav>
+        {% endif %}
     </div>
 </header>
 
@@ -138,11 +156,13 @@
         <div class="accordion" id="faqAccordion">
             <div class="accordion-item">
                 <h2 class="accordion-header" id="headingOne">
-                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                         Can I use Issues Tracker on open source projects?
                     </button>
                 </h2>
-                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#faqAccordion">
+                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
+                     data-bs-parent="#faqAccordion">
                     <div class="accordion-body">
                         Yes, Issues Tracker can be used on both private and public repositories.
                     </div>
@@ -150,11 +170,13 @@
             </div>
             <div class="accordion-item">
                 <h2 class="accordion-header" id="headingTwo">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
                         Is Issues Tracker only for GitHub?
                     </button>
                 </h2>
-                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#faqAccordion">
+                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
+                     data-bs-parent="#faqAccordion">
                     <div class="accordion-body">
                         No, Issues Tracker supports integration with both GitHub and GitLab.
                     </div>
@@ -162,11 +184,13 @@
             </div>
             <div class="accordion-item">
                 <h2 class="accordion-header" id="headingThree">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
                         How do you ensure my data is kept private?
                     </button>
                 </h2>
-                <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#faqAccordion">
+                <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree"
+                     data-bs-parent="#faqAccordion">
                     <div class="accordion-body">
                         We use industry-standard encryption and security protocols to ensure your data is safe.
                     </div>

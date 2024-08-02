@@ -25,15 +25,13 @@ from issues.views import register, user_login, user_logout
 urlpatterns = [
     path('', public_page, name='public_page'),
     path('admin/', admin.site.urls),
-    path('i', include('issues.urls')),
+    path('issue/', include('issues.urls')),
+
     path('accounts/', include('django.contrib.auth.urls')),  # Include Django's auth URLs
     path('register/', register, name='register'),
     path('login/', user_login, name='login'),
     path('logout/', user_logout, name='logout'),
 ]
 
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 
