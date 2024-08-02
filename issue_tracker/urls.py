@@ -26,7 +26,6 @@ urlpatterns = [
     path('', public_page, name='public_page'),
     path('admin/', admin.site.urls),
     path('issue/', include('issues.urls')),
-
     path('accounts/', include('django.contrib.auth.urls')),  # Include Django's auth URLs
     path('register/', register, name='register'),
     path('login/', user_login, name='login'),

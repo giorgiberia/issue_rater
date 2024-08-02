@@ -104,6 +104,8 @@ def user_login(request):
             login(request, user)
             messages.success(request, 'Login successful.')
             return redirect('issue_list_and_create')
+        else:
+            messages.error(request, f'Login failed. {form.errors}')
     else:
         form = UserLoginForm()
     return render(request, 'registration/login.html', {'form': form})
