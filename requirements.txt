@@ -1,4 +1,5 @@
 Django~=5.0.7
-black==24.4.2
+black==24.8.0
 django-cors-headers==4.4.0
 mysqlclient==2.2.4
+sentry-sdk==2.12.0
